@@ -35,10 +35,10 @@ export default {
   },
   computed: {
     task_columns () {
-      return this.$store.state.columnNames
+      return this.$store.state.tasks.columns
     },
     task_items () {
-      return this.$store.state.allTasks
+      return this.$store.state.tasks.items
     }
   },
   methods: {

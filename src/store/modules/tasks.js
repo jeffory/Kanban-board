@@ -1,24 +1,33 @@
 import tasks from '../../api/tasks'
 
 const state = {
-  all: []
+  columns: [],
+  items: []
 }
 
-const getters = {
-  allTasks: state => state.tasks
-}
+const getters = {}
 
 const actions = {
   getAllTasks ({ commit }) {
-    tasks.getTasks(products => {
-      commit('getTasks', products)
+    tasks.getTasks(tasks => {
+      commit('setTasks', tasks)
     })
+  },
+  updateTasks () {
+    // TODO
+  },
+  updateColumnTitle () {
+    // TODO
   }
 }
 
 const mutations = {
-  getTasks (state, tasks) {
-    state.tasks = tasks
+  setTasks (state, tasks) {
+    state.items = tasks.items
+    state.columns = tasks.columns
+  },
+  setColumnName (state, data) {
+    state.columns[data.id] = data.newTitle
   }
 }
 
