@@ -13,6 +13,11 @@ const actions = {
       commit('setTasks', tasks)
     })
   },
+  addTask ({ commit, state }, item) {
+    tasks.addTask(item, tasks => {
+      commit('setTasks', tasks)
+    })
+  },
   updateTasks () {
     // TODO
   },

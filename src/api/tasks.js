@@ -30,8 +30,18 @@ const _tasks = {
   ]
 }
 
+let autoIncrementID = 4
+
 export default {
   getTasks (callback) {
     setTimeout(() => callback(_tasks), 100)
+  },
+  addTask (data, callback) {
+    setTimeout(() => {
+      _tasks.items[data.columnIndex].push({id: autoIncrementID, description: data.text})
+      autoIncrementID++
+
+      callback(_tasks)
+    }, 100)
   }
 }

@@ -15,7 +15,15 @@
         <task-item v-for="item in task_items[index]" :item="item" :key="item.id"></task-item>
 
         <div slot="footer" style="text-align: center;">
-          <button>Add</button>
+          <div class="new-task-item" v-if="index === addingItem">
+            <ExpandingTextarea :focus="true" @save="addItem" @cancelled="addingItem = false"></ExpandingTextarea>
+          </div>
+
+          <button style="border: 0; background: none; cursor: pointer; height: 1.8rem; padding: 0; width: 1.8rem;" @click="addingItem = index">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" fill="#bdc3cc" />
+            </svg>
+          </button>
         </div>
       </draggable>
     </div>
@@ -26,10 +34,11 @@
 import Draggable from 'vuedraggable'
 import TaskItem from './TaskItem.vue'
 import Editable from './Editable.vue'
+import ExpandingTextarea from './ExpandingTextarea.vue'
 
 export default {
   name: 'TaskList',
-  components: {Editable, TaskItem, Draggable},
+  components: {Editable, TaskItem, Draggable, ExpandingTextarea},
   created () {
     this.$store.dispatch('getAllTasks')
   },
@@ -41,7 +50,16 @@ export default {
       return this.$store.state.tasks.items
     }
   },
+  data () {
+    return {
+      addingItem: false
+    }
+  },
   methods: {
+    addItem (text) {
+      this.$store.dispatch('addTask', {columnIndex: this.addingItem, text})
+      this.addingItem = false
+    },
     itemMoved (event) {
       let moveData = {
         fromColumn: parseInt(event.from.attributes['index'].value, 10),
@@ -50,7 +68,7 @@ export default {
         toIndex: event.newIndex
       }
 
-      // TODO: this sends the whole list back to Vuex, which appears to have already
+      // TODO: This sends the whole list back to Vuex, which appears to have already
       // non-reactively updated the tasks. It seems to be an issue with using the computed
       // properties and an index on the task_items array.
       this.updateItems(this.task_items)
@@ -122,5 +140,22 @@ $column-background-colors: #C2024F, #04BBBF, #D2D945, #FCB13F, #FF594F;
   height: 100%;
   min-height: 600px;
   padding: 1em 2em !important;
+}
+
+.new-task-item {
+  background-color: rgb(252, 249, 233);
+  border: 1px solid #dbf5ff;
+  box-shadow: 0 0 5px 0 rgba(18, 128, 168, .5);
+  color: rgb(51, 51, 51);
+  cursor: pointer;
+  font-family: 'Cantarell', sans-serif;
+  margin-bottom: 1em;
+  padding: 1em 2em;
+
+  textarea {
+    background: inherit;
+    border: 0;
+    font-size: 1em;
+  }
 }
 </style>
