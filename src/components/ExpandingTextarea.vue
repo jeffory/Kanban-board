@@ -30,9 +30,10 @@ export default {
       let textarea = this.$refs.textarea
 
       // TODO: Get rid of the height flickering/jumping somehow.
-      
       textarea.style.height = 'auto'
-      this.$nextTick(() => textarea.style.height = textarea.scrollHeight + 'px')
+      this.$nextTick(function () {
+        textarea.style.height = textarea.scrollHeight + 'px'
+      })
     },
     onBlur () {
       if (this.text.trim() !== '') {
