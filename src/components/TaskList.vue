@@ -19,7 +19,7 @@
             <ExpandingTextarea :focus="true" @save="addItem" @cancelled="addingItem = false"></ExpandingTextarea>
           </div>
 
-          <button style="border: 0; background: none; cursor: pointer; height: 1.8rem; padding: 0; width: 1.8rem;" @click="addingItem = index">
+          <button class="icon-button" @click="addingItem = index">
             <img src="../assets/icons/add-outline.svg" />
           </button>
         </div>
