@@ -1,0 +1,27 @@
+body {
+  color: #333;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  font-family: 'Cantarell', sans-serif;
+  font-size: 12.5pt;
+}
+h1 {
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 3.5em;
+  letter-spacing: -3px;
+  word-spacing: .1em;
+  margin: 0;
+  padding: .4em 0 .35em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+footer {
+  margin: 2em 1em .5em;
+  text-align: right;
+}
