@@ -12,31 +12,46 @@
         @end="itemMoved"
         >
 
-        <task-item v-for="item in task_items[index]" :item="item" :key="item.id"></task-item>
+        <task-item
+          v-for="item in task_items[index]"
+          :item="item"
+          :key="item.id"
+          @click.native="activeItem = item"
+          ></task-item>
 
         <div slot="footer" style="text-align: center;">
           <div class="new-task-item" v-if="index === addingItem">
-            <ExpandingTextarea :focus="true" @save="addItem" @cancelled="addingItem = false"></ExpandingTextarea>
+            <ExpandingTextarea
+              :focus="true"
+              @save="addItem"
+              @cancelled="addingItem = false"
+              ></ExpandingTextarea>
           </div>
 
           <button class="icon-button" @click="addingItem = index">
-            <img src="../assets/icons/add-outline.svg" />
+            <icon-add class="icon" style="fill: #bbb;" />
           </button>
         </div>
       </draggable>
     </div>
+
+    <task-detail-modal :task="activeItem" v-if="activeItem" @cancelled="activeItem = false"></task-detail-modal>
   </div>
 </template>
 
 <script>
 import Draggable from 'vuedraggable'
 import TaskItem from './TaskItem.vue'
+import TaskDetailModal from './TaskDetailModal.vue'
 import Editable from './Editable.vue'
 import ExpandingTextarea from './ExpandingTextarea.vue'
 
+// SVG icons
+import IconAdd from '../assets/icons/add-outline.svg'
+
 export default {
   name: 'TaskList',
-  components: {Editable, TaskItem, Draggable, ExpandingTextarea},
+  components: {Editable, Draggable, ExpandingTextarea, TaskItem, TaskDetailModal, IconAdd},
   created () {
     this.$store.dispatch('getAllTasks')
   },
@@ -50,7 +65,8 @@ export default {
   },
   data () {
     return {
-      addingItem: false
+      addingItem: false,
+      activeItem: false
     }
   },
   methods: {
@@ -59,20 +75,13 @@ export default {
       this.addingItem = false
     },
     itemMoved (event) {
-      let moveData = {
-        fromColumn: parseInt(event.from.attributes['index'].value, 10),
-        fromIndex: event.oldIndex,
-        toColumn: parseInt(event.to.attributes['index'].value, 10),
-        toIndex: event.newIndex
-      }
-
       // TODO: This sends the whole list back to Vuex, which appears to have already
       // non-reactively updated the tasks. It seems to be an issue with using the computed
       // properties and an index on the task_items array.
       this.updateItems(this.task_items)
     },
     updateItems (newItems) {
-      this.$store.commit('updateTasks', {'tasks': newItems})
+      this.$store.commit('refreshTasks')
     },
     updateTitle (newTitle) {
       this.task_columns[newTitle.id] = newTitle.text

@@ -1,4 +1,5 @@
 import tasks from '../../api/tasks'
+import _remove from 'lodash/remove'
 
 const state = {
   columns: [],
@@ -27,12 +28,19 @@ const actions = {
 }
 
 const mutations = {
+  refreshTasks (state) {
+    // TODO: Remove this hack if possible
+    state.items = state.items
+  },
   setTasks (state, tasks) {
     state.items = tasks.items
     state.columns = tasks.columns
   },
   setColumnName (state, data) {
     state.columns[data.id] = data.newTitle
+  },
+  removeTask (state, taskID) {
+    _remove(state.items, (item) => item.id === taskID)
   }
 }
 
