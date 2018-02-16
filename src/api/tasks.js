@@ -1,4 +1,4 @@
-import _remove from 'lodash/remove'
+import _ from 'lodash'
 
 /**
  * Mocking client-server processing
@@ -71,22 +71,14 @@ export default {
   },
   updateTask (task, callback) {
     setTimeout(() => {
-      _tasks.items[task.columnIndex].push({
-        id: autoIncrementID,
-        description: task.text,
-        status: 0,
-        details: '',
-        created: new Date(),
-        updated: new Date()
-      })
-      autoIncrementID++
+      // TODO
 
       callback(_tasks)
     }, 100)
   },
   removeTask (taskID, callback) {
     setTimeout(() => {
-      _remove(_tasks.items, (task) => task.id === taskID)
+      _.remove(_tasks.items, (task) => task.id === taskID)
 
       callback()
     }, 100)
