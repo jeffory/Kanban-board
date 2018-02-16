@@ -92,8 +92,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$column-background-colors: #C2024F, #04BBBF, #D2D945, #FCB13F, #FF594F;
-
 .tasks-list {
   display: flex;
 }

@@ -1,3 +1,5 @@
+@import 'variables';
+
 body {
   color: #333;
   margin: 0;
@@ -7,12 +9,12 @@ body {
 }
 
 #app {
-  font-family: 'Cantarell', sans-serif;
-  font-size: 12.5pt;
+  font-family: $body-font;
+  font-size: $base-font-size;
 }
 
 h1 {
-  font-family: 'Fjalla One', sans-serif;
+  font-family: $header-font;
   font-size: 3.5em;
   letter-spacing: -3px;
   word-spacing: .1em;
