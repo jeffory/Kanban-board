@@ -1,9 +1,11 @@
 # Kanban Board
 
-> A simple Kanban app written with Vue.js
+**Work in progress.**
 
-> Know issues:
->> Firefox stops sorting - an (https://github.com/RubaXa/Sortable/issues/1267)[Issue on Sortable.js] itself.
+A fairly simple Kanban app written with Vue.js and Vuex. There is no backend currently, just a mocked up Javascript class.
+
+Know issues:
+- Firefox may stop sorting - it is an [issue on Sortable.js](https://github.com/RubaXa/Sortable/issues/1267) itself.
 
 ## Build Setup
 
