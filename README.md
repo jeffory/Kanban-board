@@ -1,5 +1,7 @@
 # Kanban Board
 
+[![Build Status](https://travis-ci.org/jeffory/Kanban-board.svg?branch=master)](https://travis-ci.org/jeffory/Kanban-board)
+
 **Work in progress.**
 
 A fairly simple Kanban app written with Vue.js and Vuex. There is no backend currently, just a mocked up Javascript class.
