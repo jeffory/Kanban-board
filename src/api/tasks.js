@@ -50,6 +50,8 @@ let datastore = {
 
 let autoIncrementID = 4
 
+// Why the timeouts everywhere? If it were a real API they would be async requests.
+
 export default {
   autoIncrementID: autoIncrementID,
   datastore: datastore,
@@ -74,28 +76,33 @@ export default {
     }, 100)
   },
   findTask (taskID, callback) {
-    callback(_.find(_.flatten(this.datastore.items), {'id': taskID}))
+    setTimeout(() => {
+      let task = _.find(_.flatten(this.datastore.items), {'id': taskID}) || false
+      callback(task)
+    }, 100)
   },
   findTaskIndex (taskID, callback) {
-    let taskIndex = -1
-    let ret = false
+    setTimeout(() => {
+      let rowIndex = -1
+      let ret = false
 
-    for (let columnIndex = 0; columnIndex < this.datastore.items.length; columnIndex++) {
-      taskIndex = _.findIndex(this.datastore.items[columnIndex], {'id': taskID})
+      for (let columnIndex = 0; columnIndex < this.datastore.items.length; columnIndex++) {
+        rowIndex = _.findIndex(this.datastore.items[columnIndex], {id: taskID})
 
-      if (taskIndex > -1) {
-        ret = {columnIndex, taskIndex}
-        break
+        if (rowIndex > -1) {
+          ret = {columnIndex, rowIndex}
+          break
+        }
       }
-    }
 
-    callback(ret)
+      callback(ret)
+    }, 100)
   },
   updateTask (task, callback) {
     setTimeout(() => {
       this.findTaskIndex(task.id, index => {
         if (index !== false) {
-          this.datastore.items[index.columnIndex][index.taskIndex].description = task.description
+          this.datastore.items[index.columnIndex][index.rowIndex].description = task.description
         } else {
           throw new Error(`Cannot find index of task with id: ${task.id}`)
         }
@@ -106,7 +113,9 @@ export default {
   },
   removeTask (taskID, callback) {
     setTimeout(() => {
-      _.remove(_.flatten(this.datastore.items), {'id': taskID})
+      this.findTaskIndex(taskID, index => {
+        delete this.datastore.items[index.columnIndex][index.rowIndex]
+      })
 
       callback()
     }, 100)
