@@ -51,13 +51,15 @@ let datastore = {
 let autoIncrementID = 4
 
 export default {
+  autoIncrementID: autoIncrementID,
+  datastore: datastore,
   getTasks (callback) {
-    setTimeout(() => callback(datastore), 100)
+    setTimeout(() => callback(this.datastore), 100)
   },
   addTask (task, callback) {
     setTimeout(() => {
       let newItem = {
-        id: autoIncrementID,
+        id: this.autoIncrementID,
         description: task.description,
         status: 0,
         details: '',
@@ -65,25 +67,46 @@ export default {
         updated: new Date()
       }
 
-      datastore.items[task.columnIndex].push(newItem)
-      autoIncrementID++
+      this.datastore.items[task.columnIndex].push(newItem)
+      this.autoIncrementID++
 
       callback(newItem)
     }, 100)
   },
   findTask (taskID, callback) {
-    callback(_.find(_.flatten(datastore.items), ['id', taskID]))
+    callback(_.find(_.flatten(this.datastore.items), {'id': taskID}))
+  },
+  findTaskIndex (taskID, callback) {
+    let taskIndex = -1
+    let ret = false
+
+    for (let columnIndex = 0; columnIndex < this.datastore.items.length; columnIndex++) {
+      taskIndex = _.findIndex(this.datastore.items[columnIndex], {'id': taskID})
+
+      if (taskIndex > -1) {
+        ret = {columnIndex, taskIndex}
+        break
+      }
+    }
+
+    callback(ret)
   },
   updateTask (task, callback) {
     setTimeout(() => {
-      // TODO
+      this.findTaskIndex(task.id, index => {
+        if (index !== false) {
+          this.datastore.items[index.columnIndex][index.taskIndex].description = task.description
+        } else {
+          throw new Error(`Cannot find index of task with id: ${task.id}`)
+        }
+      })
 
-      callback(datastore)
+      callback(this.datastore)
     }, 100)
   },
   removeTask (taskID, callback) {
     setTimeout(() => {
-      _.remove(datastore.items, (task) => task.id === taskID)
+      _.remove(_.flatten(this.datastore.items), {'id': taskID})
 
       callback()
     }, 100)
