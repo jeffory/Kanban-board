@@ -71,6 +71,9 @@ export default {
       callback(newItem)
     }, 100)
   },
+  findTask (taskID, callback) {
+    callback(_.find(_.flatten(datastore.items), ['id', taskID]))
+  },
   updateTask (task, callback) {
     setTimeout(() => {
       // TODO

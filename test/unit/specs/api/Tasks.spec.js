@@ -18,4 +18,16 @@ describe('api/tasks', () => {
       done()
     })
   })
+
+  it('should add new tasks to datastore', done => {
+    tasks.addTask({
+      columnIndex: 0,
+      description: 'My new task'
+    }, newTask => {
+      tasks.findTask(newTask.id, foundTask => {
+        expect(foundTask.description).to.equal('My new task')
+        done()
+      })
+    })
+  })
 })
