@@ -14,7 +14,7 @@ const actions = {
       commit('setTasks', tasks)
     })
   },
-  addTask ({ commit, state }, item) {
+  addTask ({ commit }, item) {
     tasks.addTask(item, tasks => {
       commit('setTasks', tasks)
     })
@@ -29,7 +29,7 @@ const actions = {
 
 const mutations = {
   refreshTasks (state) {
-    // TODO: Remove this hack if possible
+    // TODO: Remove this forced refresh if possible (Problem with vue-sortable changing data)
     state.items = state.items
   },
   setTasks (state, tasks) {

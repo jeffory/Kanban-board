@@ -17,7 +17,7 @@ describe('api/tasks', () => {
       tasks.datastore.items = [[], [], [], []]
 
       tasks.addTask({
-        columnIndex: 0,
+        columnIndex: Math.floor(Math.random() * 4),
         description: 'My new task'
       }, addedTask => {
         newTask = addedTask
@@ -39,9 +39,40 @@ describe('api/tasks', () => {
   })
 
   it('should be able to update tasks', done => {
-    tasks.updateTask({id: 0, description: 'Task has a new description'}, updatedTask => {
+    tasks.updateTask({id: newTask.id, description: 'Task has a new description'}, updatedTask => {
       tasks.findTask(newTask.id, foundTask => {
         expect(foundTask.description).to.equal('Task has a new description')
+        done()
+      })
+    })
+  })
+
+  it('should be able to find tasks by id', done => {
+    tasks.findTask(newTask.id, foundTask => {
+      expect(foundTask).to.be.a('object')
+      expect(newTask.description).to.equal(foundTask.description)
+      done()
+    })
+  })
+
+  it('should be able to find tasks by column/row indexes', done => {
+    tasks.addTask({description: 'Hello world', columnIndex: 2}, newTask2 => {
+      expect(newTask2).to.be.a('object')
+
+      tasks.findTaskIndex(newTask2.id, foundIndex => {
+        expect(foundIndex).to.be.a('object')
+        let rawItem = tasks.datastore.items[foundIndex.columnIndex][foundIndex.rowIndex]
+
+        expect(newTask2.description).to.equal(rawItem.description)
+        done()
+      })
+    })
+  })
+
+  it('should be able to delete tasks', done => {
+    tasks.removeTask(newTask.id, () => {
+      tasks.findTask(newTask.id, foundTask => {
+        expect(foundTask).to.equal(false)
         done()
       })
     })
