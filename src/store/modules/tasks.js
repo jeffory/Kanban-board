@@ -14,9 +14,9 @@ const actions = {
       commit('setTasks', tasks)
     })
   },
-  addTask ({ commit }, item) {
-    tasks.addTask(item, tasks => {
-      commit('setTasks', tasks)
+  addTask ({ commit, state }, item) {
+    tasks.addTask(item, task => {
+      commit('refreshTasks')
     })
   },
   updateTasks () {

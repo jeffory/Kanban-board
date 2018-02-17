@@ -70,8 +70,8 @@ export default {
     }
   },
   methods: {
-    addItem (text) {
-      this.$store.dispatch('addTask', {columnIndex: this.addingItem, text})
+    addItem (description) {
+      this.$store.dispatch('addTask', {columnIndex: this.addingItem, description})
       this.addingItem = false
     },
     itemMoved (event) {
