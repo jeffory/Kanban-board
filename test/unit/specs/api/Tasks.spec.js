@@ -8,24 +8,40 @@ tasks.datastore = {
 }
 
 describe('api/tasks', () => {
-  it('should return new task on creation', done => {
-    tasks.addTask({
-      columnIndex: 0,
-      description: 'My new task'
-    }, newTask => {
-      expect(newTask.id).to.be.a('number')
-      expect(newTask.description).to.equal('My new task')
+  let newTask = {}
+
+  beforeEach(() => {
+    return new Promise((resolve) => {
+      // Reset the datastore object before each test
+      tasks.autoIncrementID = 0
+      tasks.datastore.items = [[], [], [], []]
+
+      tasks.addTask({
+        columnIndex: 0,
+        description: 'My new task'
+      }, addedTask => {
+        newTask = addedTask
+        resolve()
+      })
+    })
+  })
+
+  it('should return new task on creation', () => {
+    expect(newTask.id).to.be.a('number')
+    expect(newTask.description).to.equal('My new task')
+  })
+
+  it('should add new tasks to datastore', done => {
+    tasks.findTask(newTask.id, foundTask => {
+      expect(foundTask.description).to.equal('My new task')
       done()
     })
   })
 
-  it('should add new tasks to datastore', done => {
-    tasks.addTask({
-      columnIndex: 0,
-      description: 'My new task'
-    }, newTask => {
+  it('should be able to update tasks', done => {
+    tasks.updateTask({id: 0, description: 'Task has a new description'}, updatedTask => {
       tasks.findTask(newTask.id, foundTask => {
-        expect(foundTask.description).to.equal('My new task')
+        expect(foundTask.description).to.equal('Task has a new description')
         done()
       })
     })
