@@ -3,7 +3,7 @@ import _ from 'lodash'
 /**
  * Mocking client-server processing
  */
-const _tasks = {
+let datastore = {
   columns: ['List 1', 'List 2', 'List 3', 'List 4'],
   items: [
     [
@@ -52,33 +52,35 @@ let autoIncrementID = 4
 
 export default {
   getTasks (callback) {
-    setTimeout(() => callback(_tasks), 100)
+    setTimeout(() => callback(datastore), 100)
   },
   addTask (task, callback) {
     setTimeout(() => {
-      _tasks.items[task.columnIndex].push({
+      let newItem = {
         id: autoIncrementID,
-        description: task.text,
+        description: task.description,
         status: 0,
         details: '',
         created: new Date(),
         updated: new Date()
-      })
+      }
+
+      datastore.items[task.columnIndex].push(newItem)
       autoIncrementID++
 
-      callback(_tasks)
+      callback(newItem)
     }, 100)
   },
   updateTask (task, callback) {
     setTimeout(() => {
       // TODO
 
-      callback(_tasks)
+      callback(datastore)
     }, 100)
   },
   removeTask (taskID, callback) {
     setTimeout(() => {
-      _.remove(_tasks.items, (task) => task.id === taskID)
+      _.remove(datastore.items, (task) => task.id === taskID)
 
       callback()
     }, 100)
