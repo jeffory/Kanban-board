@@ -42,12 +42,12 @@ export default {
   width: 100%;
 
   &:hover {
-    background-color: hsl(0, 0%, 97%);
-    // padding: .25em .5em .20em;
+    background-color: $white-2;
+    color: $grey-4;
   }
 
   &:empty:before {
-    color: #bbb;
+    color: $grey-2;
     content: attr(data-placeholder);
     display: block;
     font-style: italic;
@@ -60,9 +60,9 @@ export default {
 
 .editable:active,
 .editable:focus {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  color: #555;
+  background-color: $white;
+  border: 1px solid $grey-2;
+  color: $grey-4;
   outline: none;
   padding: .28rem .5rem .20rem;
 }

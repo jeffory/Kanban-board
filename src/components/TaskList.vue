@@ -103,15 +103,15 @@ export default {
   width: 400px;
 
   &:not(:last-of-type) {
-    border-left: 1px solid rgb(241, 241, 241);
+    border-left: 1px solid $white-3;
   }
 
   &:nth-of-type(odd) {
-    background-color: #fff;
+    background-color: $white;
   }
 
   &:nth-of-type(even) {
-    background-color: rgba(241, 241, 241, 0.3);
+    background-color: $white-1;
   }
 
   @for $i from 1 through length($column-background-colors) {
@@ -132,9 +132,9 @@ export default {
   text-align: center;
 
   &:after {
-    border-bottom: 2px solid rgba(255,255,255, .3);
+    border-bottom: 2px solid transparentize($white, 0.8);
     bottom: 2px;
-    content: ' ';
+    content: '';
     left: 0;
     position: absolute;
     width: 100%;
@@ -144,16 +144,16 @@ export default {
 .tasks-column-content {
   height: 100%;
   min-height: 600px;
-  padding: 1em 2em !important;
+  padding: 1em 2em;
 }
 
 .new-task-item {
-  background-color: rgb(252, 249, 233);
-  border: 1px solid #dbf5ff;
-  box-shadow: 0 0 5px 0 rgba(18, 128, 168, .5);
-  color: rgb(51, 51, 51);
+  background-color: $task-item-bg-color;
+  border: 1px solid $highlighted-border-color;
+  box-shadow: 0 0 5px 0 $highlighted-shadow-color;
+  color: $grey-6;
   cursor: pointer;
-  font-family: 'Cantarell', sans-serif;
+  
   margin-bottom: 1em;
   padding: 1em 2em;
 
@@ -161,6 +161,7 @@ export default {
     background: inherit;
     border: 0;
     font-size: 1em;
+    font-family: $body-font;
   }
 }
 </style>

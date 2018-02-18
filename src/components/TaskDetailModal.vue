@@ -5,12 +5,12 @@
         <icon-close class="icon" />
       </button>
 
-      <header>
+      <header class="modal-header">
         <h2 class="modal-title"><editable :text="task.description"></editable></h2>
         <p class="modal-title-meta" v-text="friendlyDate(task.created)"></p>
       </header>
 
-      <div>
+      <div class="modal-content">
         <editable :text="task.details" placeholder="Add any task notes here..."></editable>
       </div>
     </div>
@@ -46,10 +46,11 @@ export default {
 
 <style lang="scss" scoped>
   .modal {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: $white;
+    border: 1px solid $grey-1;
+    border-radius: 8px;
     box-sizing: border-box;
-    padding: 1em 4em 1em 2em;
+    padding: 1em 2em;
     position: fixed;
     left: 50%;
     top: 20%;
@@ -57,9 +58,14 @@ export default {
     width: 600px;
     z-index: 9001;
   }
+
+  .modal-header {
+    margin-right: 2em;
+  }
+
   .modal-close-button {
     svg {
-      fill: lighten(#333, 40%);
+      fill: lighten($grey-5, 40%);
     }
 
     height: 24px;
@@ -70,7 +76,7 @@ export default {
     width: 24px;
   }
   #modal-backdrop {
-    background-color: hsla(180, 20, 87%, .7);
+    background-color: transparentize($white-2, .3);
     height: 100%;
     position: absolute;
     left: 0;
@@ -84,9 +90,15 @@ export default {
   }
 
   .modal-title-meta {
-    color: #888;
+    color: $grey-3;
     font-size: .8em;
     margin-top: 0;
     padding-left: .6rem;
+  }
+
+  .modal-controls {
+    border-top: 1px solid $white-3;
+    margin-top: 2em;
+    padding: 1em 0 .3em;
   }
 </style>
