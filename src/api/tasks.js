@@ -11,15 +11,15 @@ let datastore = {
         id: 0,
         description: 'Buy some milk',
         status: 0,
-        details: '',
+        details: 'Only the finest milk',
         created: new Date().setTime(1518730711109),
         updated: new Date().setTime(1518730711109)
       },
       {
         id: 1,
-        description: 'Switch out draggable experiment with a sortable option',
+        description: 'Vacuum the house',
         status: 0,
-        details: '',
+        details: 'Vacuum cleaner is in the garage',
         created: new Date().setTime(1518730721811),
         updated: new Date().setTime(1518730721811)
       }

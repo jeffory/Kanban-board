@@ -75,12 +75,6 @@ export default {
       this.addingItem = false
     },
     itemMoved (event) {
-      // TODO: This sends the whole list back to Vuex, which appears to have already
-      // non-reactively updated the tasks. It seems to be an issue with using the computed
-      // properties and an index on the task_items array.
-      this.updateItems(this.task_items)
-    },
-    updateItems (newItems) {
       this.$store.commit('refreshTasks')
     },
     updateTitle (newTitle) {
@@ -153,7 +147,6 @@ export default {
   box-shadow: 0 0 5px 0 $highlighted-shadow-color;
   color: $grey-6;
   cursor: pointer;
-  
   margin-bottom: 1em;
   padding: 1em 2em;
 
