@@ -1,5 +1,12 @@
 <template>
-  <span class="editable" contenteditable="true" v-text="text" @blur="updated" @keydown.enter="enterPressed" :data-placeholder="placeholder"></span>
+  <span class="editable"
+    contenteditable="true"
+    v-text="text"
+    @blur="updated"
+    @keydown.enter="enterPressed"
+    :data-placeholder="placeholder"
+    @keydown.esc="event.target.innerText = text"></span>
+
 </template>
 
 <script>

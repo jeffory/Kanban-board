@@ -35,7 +35,7 @@
       </draggable>
     </div>
 
-    <task-detail-modal :task="activeItem" v-if="activeItem" @cancelled="activeItem = false"></task-detail-modal>
+    <task-detail-modal :task="activeItem" v-if="activeItem" @closed="activeItem = false"></task-detail-modal>
   </div>
 </template>
 

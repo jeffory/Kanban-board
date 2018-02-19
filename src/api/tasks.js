@@ -92,6 +92,8 @@ export default {
       this.findTaskIndex(task.id, index => {
         if (index !== false) {
           this.datastore.items[index[0]][index[1]].description = task.description
+          this.datastore.items[index[0]][index[1]].details = task.details
+          this.datastore.items[index[0]][index[1]].status = task.status
         } else {
           throw new Error(`Cannot find index of task with id: ${task.id}`)
         }
@@ -106,7 +108,7 @@ export default {
         if (index !== false) {
           this.datastore.items[index[0]].splice([index[1]], 1)
         } else {
-          throw new Error(`Cannot remove task with id: ${task.id}`)
+          throw new Error(`Cannot remove task with id: ${id}`)
         }
       })
 
