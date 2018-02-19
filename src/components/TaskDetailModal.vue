@@ -6,12 +6,22 @@
       </button>
 
       <header class="modal-header">
-        <h2 class="modal-title"><editable :text="task.description"></editable></h2>
+        <h2 class="modal-title"><editable :text="editingTask.description" @change="(e) => {editingTask.description = e.text; update()}"></editable></h2>
         <p class="modal-title-meta" v-text="friendlyDate(task.created)"></p>
       </header>
 
       <div class="modal-content">
         <editable :text="task.details" placeholder="Add any task notes here..."></editable>
+      </div>
+
+      <div class="modal-controls level">
+        <div class="level-left">
+          <button class="button is-text" @click="remove">Delete</button>
+        </div>
+
+        <div class="level-right">
+          <button class="button" @click="cancel">Okay</button>
+        </div>
       </div>
     </div>
 
@@ -33,12 +43,21 @@ export default {
   components: {Editable, IconClose},
   props: ['task'],
   data () {
-    return {}
+    return {
+      editingTask: this.task
+    }
   },
   methods: {
     friendlyDate: (date) => moment(date, 'x').calendar(),
     cancel () {
       this.$emit('cancelled')
+    },
+    remove () {
+      this.$store.dispatch('removeTask', this.task.id)
+      this.$emit('cancelled')
+    },
+    update () {
+      this.$store.dispatch('updateTask', this.editingTask)
     }
   }
 }

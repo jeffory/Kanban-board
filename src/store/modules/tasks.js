@@ -1,5 +1,5 @@
 import tasks from '../../api/tasks'
-import _remove from 'lodash/remove'
+import utils from '@/utils'
 
 const state = {
   columns: [],
@@ -14,16 +14,23 @@ const actions = {
       commit('setTasks', tasks)
     })
   },
-  addTask ({ commit, state }, item) {
-    tasks.addTask(item, task => {
+  addTask ({ commit }, task) {
+    tasks.addTask(task, newTask => {
       commit('refreshTasks')
     })
   },
-  updateTasks () {
-    // TODO
+  updateTask ({ commit }, task) {
+    tasks.updateTask(task, (updatedTask) => {
+      commit('updateTask', updatedTask)
+    })
   },
   updateColumnTitle () {
     // TODO
+  },
+  removeTask ({ commit }, id) {
+    tasks.removeTask(id, () => {
+      commit('removeTask', id)
+    })
   }
 }
 
@@ -39,8 +46,12 @@ const mutations = {
   setColumnName (state, data) {
     state.columns[data.id] = data.newTitle
   },
-  removeTask (state, taskID) {
-    _remove(state.items, (item) => item.id === taskID)
+  updateTask (state, id) {
+    // ...
+  },
+  removeTask (state, id) {
+    let {index} = utils.deepFind(state, {id})
+    state.items[index[0]].splice(index[1], 1)
   }
 }
 

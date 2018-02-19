@@ -103,7 +103,11 @@ export default {
   removeTask (id, callback) {
     setTimeout(() => {
       this.findTaskIndex(id, index => {
-        this.datastore.items[index[0]].splice([index[1]], 1)
+        if (index !== false) {
+          this.datastore.items[index[0]].splice([index[1]], 1)
+        } else {
+          throw new Error(`Cannot remove task with id: ${task.id}`)
+        }
       })
 
       callback()
