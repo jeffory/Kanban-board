@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import utils from '@/utils'
 
 /**
  * Mocking client-server processing
@@ -75,34 +75,23 @@ export default {
       callback(newItem)
     }, 100)
   },
-  findTask (taskID, callback) {
+  findTask (id, callback) {
     setTimeout(() => {
-      let task = _.find(_.flatten(this.datastore.items), {'id': taskID}) || false
-      callback(task)
+      let {object} = utils.deepFind(this.datastore.items, {id})
+      callback(object || false)
     }, 100)
   },
-  findTaskIndex (taskID, callback) {
+  findTaskIndex (id, callback) {
     setTimeout(() => {
-      let rowIndex = -1
-      let ret = false
-
-      for (let columnIndex = 0; columnIndex < this.datastore.items.length; columnIndex++) {
-        rowIndex = _.findIndex(this.datastore.items[columnIndex], {id: taskID})
-
-        if (rowIndex > -1) {
-          ret = {columnIndex, rowIndex}
-          break
-        }
-      }
-
-      callback(ret)
+      let {index} = utils.deepFind(this.datastore.items, {id})
+      callback(index)
     }, 100)
   },
   updateTask (task, callback) {
     setTimeout(() => {
       this.findTaskIndex(task.id, index => {
         if (index !== false) {
-          this.datastore.items[index.columnIndex][index.rowIndex].description = task.description
+          this.datastore.items[index[0]][index[1]].description = task.description
         } else {
           throw new Error(`Cannot find index of task with id: ${task.id}`)
         }
@@ -111,10 +100,10 @@ export default {
       callback(this.datastore)
     }, 100)
   },
-  removeTask (taskID, callback) {
+  removeTask (id, callback) {
     setTimeout(() => {
-      this.findTaskIndex(taskID, index => {
-        delete this.datastore.items[index.columnIndex][index.rowIndex]
+      this.findTaskIndex(id, index => {
+        this.datastore.items[index[0]].splice([index[1]], 1)
       })
 
       callback()

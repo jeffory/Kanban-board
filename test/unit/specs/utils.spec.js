@@ -2,7 +2,7 @@ import utils from '@/utils'
 
 let testArray = [
   [[
-    // testArray[0][0]
+    // testArray[0][0][0]
     {
       id: 67,
       text: 'some text'
@@ -10,7 +10,7 @@ let testArray = [
   ]],
   [[],
     [[], [], [], [], [], [[], [
-      // testArray[1][1][5][1]
+      // testArray[1][1][5][1][0]
       {
         id: 1,
         text: 'hello'
@@ -21,7 +21,7 @@ let testArray = [
   [[], [], [
     [],
     [
-      // testArray[3][2][1]
+      // testArray[3][2][1][0]
       {
         id: 31,
         text: 'hello world'
@@ -34,7 +34,7 @@ describe('utils/deepFind', () => {
   it('should return a found object and index', () => {
     let result = utils.deepFind(testArray, {id: 67})
 
-    expect(result.index).to.deep.equal([0, 0])
+    expect(result.index).to.deep.equal([0, 0, 0])
     expect(result.object.id).to.equal(67)
     expect(result.object.text).to.equal('some text')
   })
@@ -42,7 +42,7 @@ describe('utils/deepFind', () => {
   it('should return a found object and index #2', () => {
     let result = utils.deepFind(testArray, {id: 31})
 
-    expect(result.index).to.deep.equal([3, 2, 1])
+    expect(result.index).to.deep.equal([3, 2, 1, 0])
     expect(result.object.id).to.equal(31)
     expect(result.object.text).to.equal('hello world')
   })
@@ -50,7 +50,7 @@ describe('utils/deepFind', () => {
   it('should return a found object and index #3', () => {
     let result = utils.deepFind(testArray, {id: 1})
 
-    expect(result.index).to.deep.equal([1, 1, 5, 1])
+    expect(result.index).to.deep.equal([1, 1, 5, 1, 0])
     expect(result.object.id).to.equal(1)
     expect(result.object.text).to.equal('hello')
   })

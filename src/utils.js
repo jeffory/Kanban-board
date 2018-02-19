@@ -26,6 +26,7 @@ export default {
 
       if (result !== -1) {
         currentIndex.push(i)
+        currentIndex.push(foundIndex)
         break
       }
 

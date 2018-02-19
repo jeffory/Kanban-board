@@ -60,8 +60,8 @@ describe('api/tasks', () => {
       expect(newTask2).to.be.a('object')
 
       tasks.findTaskIndex(newTask2.id, foundIndex => {
-        expect(foundIndex).to.be.a('object')
-        let rawItem = tasks.datastore.items[foundIndex.columnIndex][foundIndex.rowIndex]
+        expect(foundIndex).to.be.a('array')
+        let rawItem = tasks.datastore.items[foundIndex[0]][foundIndex[1]]
 
         expect(newTask2.description).to.equal(rawItem.description)
         done()
