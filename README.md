@@ -4,6 +4,8 @@
 
 **Work in progress.**
 
+![Screenshot of application](./screenshot.png)
+
 A fairly simple Kanban app written with Vue.js and Vuex. There is no backend currently, just a mocked up Javascript class.
 
 Know issues:
