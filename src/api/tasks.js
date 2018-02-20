@@ -99,7 +99,7 @@ export default {
         }
       })
 
-      callback(this.datastore)
+      callback(task)
     }, 100)
   },
   removeTask (id, callback) {
