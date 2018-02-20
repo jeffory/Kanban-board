@@ -3,25 +3,31 @@
     contenteditable="true"
     v-text="text"
     @blur="updated"
+    @input="(e) => currentText = e.target.innerText"
     @keydown.enter="enterPressed"
-    :data-placeholder="placeholder"
-    @keydown.esc="event.target.innerText = text"></span>
+    @keydown.esc="escapePressed"
+    :data-placeholder="placeholder"></span>
 </template>
 
 <script>
 export default {
   props: ['id', 'text', 'no-newlines', 'placeholder'],
+  data () {
+    return {
+      currentText: ''
+    }
+  },
   methods: {
-    updated (event) {
+    updated () {
       // Trim last <br /> that some browsers add, so the placeholder can work
-      this.text = this.text.replace(/<br[^>]*\/?>\n*$/gim, '')
+      this.currentText = this.currentText.replace(/<br[^>]*\/?>\n*$/gim, '')
 
       // If text is no different to the original
-      if (event.target.innerText === this.text) {
+      if (this.currentText === this.text) {
         return
       }
 
-      let data = {'text': event.target.innerText}
+      let data = {'text': this.currentText}
 
       if (this.id) {
         data.id = this.id
@@ -29,9 +35,17 @@ export default {
 
       this.$emit('change', data)
     },
+    escapePressed (event) {
+      event.preventDefault()
+      this.currentText = this.text.valueOf()
+      event.target.innerText = this.text
+      event.target.blur()
+    },
     enterPressed (event) {
       if (this.noNewlines) {
         event.preventDefault()
+        this.updated()
+        event.target.blur()
         return false
       }
     }
