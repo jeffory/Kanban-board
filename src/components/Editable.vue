@@ -6,7 +6,6 @@
     @keydown.enter="enterPressed"
     :data-placeholder="placeholder"
     @keydown.esc="event.target.innerText = text"></span>
-
 </template>
 
 <script>

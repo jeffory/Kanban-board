@@ -15,43 +15,48 @@ const getters = {
 const actions = {
   getAllTasks ({ commit }) {
     taskAPI.getTasks(tasks => {
-      commit('setTasks', tasks)
+      commit('SET_TASKS', tasks)
     })
+  },
+  refreshTasks ({commit}) {
+    commit('REFRESH_TASKS')
   },
   addTask ({ commit }, task) {
     taskAPI.addTask(task, newTask => {
-      commit('refreshTasks')
+      commit('ADD_TASK', newTask)
     })
   },
   updateTask ({ commit }, task) {
     taskAPI.updateTask(task, (updatedTask) => {
-      commit('updateTask', updatedTask)
+      commit('UPDATE_TASK', updatedTask)
     })
-  },
-  updateColumnTitle () {
-    // TODO
   },
   removeTask ({ commit }, id) {
     taskAPI.removeTask(id, () => {
-      commit('removeTask', id)
+      commit('REMOVE_TASK', id)
+    })
+  },
+  updateColumn ({commit}, column) {
+    taskAPI.updateColumn(column, () => {
+      commit('UPDATE_COLUMN', column)
     })
   }
 }
 
 const mutations = {
-  refreshTasks (state) {
-    // TODO: Remove this forced refresh if possible (Problem with vue-sortable changing data)
+  ADD_TASK (state, newTask) {
+    state.items[newTask.columnIndex].push(newTask)
+  },
+  REFRESH_TASKS (state) {
+    // After an item is moved, state.items doesn't react
     state.items = state.items
   },
-  setTasks (state, tasks) {
+  SET_TASKS (state, tasks) {
     // Clone, otherwise they're referenced
     state.items = _.cloneDeep(tasks.items)
     state.columns = _.cloneDeep(tasks.columns)
   },
-  setColumnName (state, {id, newTitle}) {
-    state.columns[id] = newTitle
-  },
-  updateTask (state, updatedTask) {
+  UPDATE_TASK (state, updatedTask) {
     let {index} = utils.deepFind(state.items, {id: updatedTask.id})
 
     if (index != null) {
@@ -60,9 +65,12 @@ const mutations = {
       state.items[index[0]][index[1]].status = updatedTask.status
     }
   },
-  removeTask (state, id) {
+  REMOVE_TASK (state, id) {
     let {index} = utils.deepFind(state.items, {id})
     state.items[index[0]].splice(index[1], 1)
+  },
+  UPDATE_COLUMN (state, {index, title}) {
+    state.columns[index] = title
   }
 }
 

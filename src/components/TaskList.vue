@@ -2,7 +2,7 @@
   <div class="tasks-list">
     <div class="tasks-column" v-for="(title, index) in taskColumns" :key="index">
       <div class="tasks-column-title">
-        <editable :text="title" :key="index" :id="index" @change="updateTitle" :no-newlines="true"></editable>
+        <editable :text="title" :key="index" :id="index" @change="updateColumn" :no-newlines="true"></editable>
       </div>
 
       <draggable class="tasks-column-content"
@@ -74,11 +74,10 @@ export default {
       this.addingItem = false
     },
     itemMoved (event) {
-      this.$store.commit('refreshTasks')
+      this.$store.dispatch('refreshTasks')
     },
-    updateTitle (newTitle) {
-      this.taskColumns[newTitle.id] = newTitle.text
-      this.$store.dispatch('updateColumnTitle', {'id': newTitle.id, 'newTitle': newTitle.text})
+    updateColumn ({id, text}) {
+      this.$store.dispatch('updateColumn', {index: id, title: text})
     }
   }
 }

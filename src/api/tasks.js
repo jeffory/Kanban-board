@@ -8,7 +8,7 @@ let datastore = {
   items: [
     [
       {
-        id: 0,
+        id: 1,
         description: 'Buy some milk',
         status: 0,
         details: 'Only the finest milk',
@@ -16,7 +16,7 @@ let datastore = {
         updated: new Date().setTime(1518730711109)
       },
       {
-        id: 1,
+        id: 2,
         description: 'Vacuum the house',
         status: 0,
         details: 'Vacuum cleaner is in the garage',
@@ -26,7 +26,7 @@ let datastore = {
     ],
     [
       {
-        id: 2,
+        id: 3,
         description: 'Buy eggs',
         status: 0,
         details: '',
@@ -36,7 +36,7 @@ let datastore = {
     ],
     [
       {
-        id: 3,
+        id: 4,
         description: 'Buy spices',
         status: 0,
         details: '',
@@ -48,7 +48,7 @@ let datastore = {
   ]
 }
 
-let autoIncrementID = 4
+let autoIncrementID = 5
 
 // Why the timeouts everywhere? If it were a real API they would be async requests.
 
@@ -66,7 +66,8 @@ export default {
         status: 0,
         details: '',
         created: new Date(),
-        updated: new Date()
+        updated: new Date(),
+        columnIndex: task.columnIndex
       }
 
       this.datastore.items[task.columnIndex].push(newItem)
@@ -113,6 +114,13 @@ export default {
       })
 
       callback()
+    }, 100)
+  },
+  updateColumn (column, callback) {
+    setTimeout(() => {
+      this.datastore.columns[column.index] = column.title
+
+      callback(column)
     }, 100)
   }
 }
