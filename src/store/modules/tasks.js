@@ -1,26 +1,30 @@
-import tasks from '../../api/tasks'
+import taskAPI from '../../api/tasks'
 import utils from '@/utils'
+import _ from 'lodash'
 
 const state = {
   columns: [],
   items: []
 }
 
-const getters = {}
+const getters = {
+  taskColumns: (state) => state.columns,
+  taskItems: (state) => state.items
+}
 
 const actions = {
   getAllTasks ({ commit }) {
-    tasks.getTasks(tasks => {
+    taskAPI.getTasks(tasks => {
       commit('setTasks', tasks)
     })
   },
   addTask ({ commit }, task) {
-    tasks.addTask(task, newTask => {
+    taskAPI.addTask(task, newTask => {
       commit('refreshTasks')
     })
   },
   updateTask ({ commit }, task) {
-    tasks.updateTask(task, (updatedTask) => {
+    taskAPI.updateTask(task, (updatedTask) => {
       commit('updateTask', updatedTask)
     })
   },
@@ -28,7 +32,7 @@ const actions = {
     // TODO
   },
   removeTask ({ commit }, id) {
-    tasks.removeTask(id, () => {
+    taskAPI.removeTask(id, () => {
       commit('removeTask', id)
     })
   }
@@ -40,17 +44,24 @@ const mutations = {
     state.items = state.items
   },
   setTasks (state, tasks) {
-    state.items = tasks.items
-    state.columns = tasks.columns
+    // Clone, otherwise they're referenced
+    state.items = _.cloneDeep(tasks.items)
+    state.columns = _.cloneDeep(tasks.columns)
   },
-  setColumnName (state, data) {
-    state.columns[data.id] = data.newTitle
+  setColumnName (state, {id, newTitle}) {
+    state.columns[id] = newTitle
   },
-  updateTask (state, id) {
-    // ...
+  updateTask (state, updatedTask) {
+    let {index} = utils.deepFind(state.items, {id: updatedTask.id})
+
+    if (index != null) {
+      state.items[index[0]][index[1]].description = updatedTask.description
+      state.items[index[0]][index[1]].details = updatedTask.details
+      state.items[index[0]][index[1]].status = updatedTask.status
+    }
   },
   removeTask (state, id) {
-    let {index} = utils.deepFind(state, {id})
+    let {index} = utils.deepFind(state.items, {id})
     state.items[index[0]].splice(index[1], 1)
   }
 }
