@@ -7,13 +7,13 @@
 
       <header class="modal-header">
         <h2 class="modal-title">
-          <editable :text="editingTask.description" @change="(e) => {editingTask.description = e.text; update()}" :no-newlines="true"></editable>
+          <editable :text="editingTask.description" @change="(e) => {editingTask.description = e.text}" :no-newlines="true"></editable>
           </h2>
         <p class="modal-title-meta" v-text="friendlyDate(task.created)"></p>
       </header>
 
       <div class="modal-content">
-        <editable :text="editingTask.details" @change="(e) => {editingTask.details = e.text; update()}" placeholder="Add any task notes here..."></editable>
+        <editable :text="editingTask.details" @change="(e) => {editingTask.details = e.text}" placeholder="Add any task notes here..."></editable>
       </div>
 
       <div class="modal-controls level">
@@ -35,8 +35,8 @@
 import Editable from './Editable.vue'
 import moment from 'moment'
 import 'moment/locale/en-au'
-
 import IconClose from '../assets/icons/close.svg'
+import _ from 'lodash'
 
 moment.locale('en-au')
 
@@ -46,21 +46,21 @@ export default {
   props: ['task'],
   data () {
     return {
-      editingTask: this.task
+      editingTask: _.clone(this.task)
     }
   },
   methods: {
     friendlyDate: (date) => moment(date, 'x').calendar(),
-    remove () {
-      this.$store.dispatch('removeTask', this.task.id)
-      this.$emit('closed')
-    },
     update () {
       this.$store.dispatch('updateTask', this.editingTask)
     },
     updateAndClose () {
       this.update()
       this.close()
+    },
+    remove () {
+      this.$store.dispatch('removeTask', this.task.id)
+      this.$emit('closed')
     },
     close () {
       this.$emit('closed')
