@@ -61,15 +61,3 @@ describe('utils/deepFind', () => {
     expect(result).to.equal(-1)
   })
 })
-
-describe('utils/deepRemove', () => {
-  it('should find and delete an object', () => {
-    let newArray = testArray
-
-    expect(utils.deepFind(newArray, {id: 67})).not.to.equal(-1)
-
-    newArray = utils.deepRemove(newArray, {id: 67})
-
-    expect(utils.deepFind(newArray, {id: 67})).to.equal(-1)
-  })
-})
