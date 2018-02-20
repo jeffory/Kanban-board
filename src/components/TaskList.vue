@@ -1,19 +1,19 @@
 <template>
   <div class="tasks-list">
-    <div class="tasks-column" v-for="(title, index) in task_columns" :key="index">
+    <div class="tasks-column" v-for="(title, index) in taskColumns" :key="index">
       <div class="tasks-column-title">
         <editable :text="title" :key="index" :id="index" @change="updateTitle" :no-newlines="true"></editable>
       </div>
 
       <draggable class="tasks-column-content"
-        :list="task_items[index]"
+        :list="taskItems[index]"
         :index="index"
         :options="{group: 'tasks', draggable: '.task-item'}"
         @end="itemMoved"
         >
 
         <task-item
-          v-for="item in task_items[index]"
+          v-for="item in taskItems[index]"
           :item="item"
           :key="item.id"
           @click.native="activeItem = item"
@@ -45,6 +45,7 @@ import TaskItem from './TaskItem.vue'
 import TaskDetailModal from './TaskDetailModal.vue'
 import Editable from './Editable.vue'
 import ExpandingTextarea from './ExpandingTextarea.vue'
+import { mapGetters } from 'vuex'
 
 // SVG icons
 import IconAdd from '../assets/icons/add-outline.svg'
@@ -56,12 +57,10 @@ export default {
     this.$store.dispatch('getAllTasks')
   },
   computed: {
-    task_columns () {
-      return this.$store.state.tasks.columns
-    },
-    task_items () {
-      return this.$store.state.tasks.items
-    }
+    ...mapGetters([
+      'taskColumns',
+      'taskItems'
+    ])
   },
   data () {
     return {
@@ -78,8 +77,8 @@ export default {
       this.$store.commit('refreshTasks')
     },
     updateTitle (newTitle) {
-      this.task_columns[newTitle.id] = newTitle.text
-      this.$store.commit('updateColumnTitle', {'id': newTitle.id, 'newTitle': newTitle.text})
+      this.taskColumns[newTitle.id] = newTitle.text
+      this.$store.dispatch('updateColumnTitle', {'id': newTitle.id, 'newTitle': newTitle.text})
     }
   }
 }
